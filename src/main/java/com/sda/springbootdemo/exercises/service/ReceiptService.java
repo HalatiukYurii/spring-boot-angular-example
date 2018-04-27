@@ -1,5 +1,7 @@
 package com.sda.springbootdemo.exercises.service;
 
+import static org.springframework.util.CollectionUtils.isEmpty;
+
 import com.sda.springbootdemo.exercises.exception.NotFoundException;
 import com.sda.springbootdemo.exercises.model.Product;
 import com.sda.springbootdemo.exercises.model.Receipt;
@@ -7,6 +9,7 @@ import com.sda.springbootdemo.exercises.repository.ReceiptRepository;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -19,18 +22,6 @@ public class ReceiptService {
     @Autowired
     private ReceiptRepository receiptRepository;
 
-    public List<Receipt> search(LocalDate startDate, LocalDate endDate) {
-        if (null != startDate && null != endDate) {
-            return receiptRepository.findByDateGreaterThanEqualAndDateLessThanEqual(
-                startDate.atStartOfDay(), endDate.atTime(LocalTime.MAX));
-        } else if (null != startDate) {
-            return receiptRepository.findByDateGreaterThanEqual(startDate.atStartOfDay());
-        } else if (null != endDate) {
-            return receiptRepository.findByDateLessThanEqual(endDate.atTime(LocalTime.MAX));
-        }
-        return receiptRepository.findAll();
-    }
-
     public Double summary(Long id) {
         Receipt receipt = receiptRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(String.format("Receipt with %s not found", id)));
@@ -42,7 +33,12 @@ public class ReceiptService {
     }
 
     public Double summary(Collection<Long> ids) {
-        List<Receipt> receipts = receiptRepository.findAllById(ids);
+        List<Receipt> receipts;
+        if (isEmpty(ids)) {
+            receipts = receiptRepository.findAll();
+        } else {
+            receipts = receiptRepository.findAllById(ids);
+        }
 
         return receipts
                 .stream()

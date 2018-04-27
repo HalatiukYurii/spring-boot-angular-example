@@ -1,6 +1,8 @@
 package com.sda.springbootdemo.exercises.dto;
 
+import com.sda.springbootdemo.exercises.model.Product;
 import com.sda.springbootdemo.exercises.model.Receipt;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,15 +15,23 @@ import java.util.stream.Collectors;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ReceiptDto extends BaseReceiptDto {
+public class ReceiptDto extends BaseDto {
 
-    private List<BaseProductDto> products;
+    private String buyersName;
+    private LocalDateTime date;
+    private List<ProductDto> products;
 
     public ReceiptDto(Receipt receipt) {
-        super(receipt);
-        this.products = receipt.getProducts()
-                .stream()
-                .map(BaseProductDto::new)
-                .collect(Collectors.toList());
+        this(receipt.getId(), receipt.getBuyer(), receipt.getDate(), receipt.getProducts());
+    }
+
+    public ReceiptDto(Long id, String buyersName, LocalDateTime date, List<Product> products) {
+        this.id = id;
+        this.buyersName = buyersName;
+        this.date = date;
+        this.products = products
+            .stream()
+            .map(ProductDto::new)
+            .collect(Collectors.toList());
     }
 }

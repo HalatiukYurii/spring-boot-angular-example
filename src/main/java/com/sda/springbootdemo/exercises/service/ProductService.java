@@ -48,47 +48,6 @@ public class ProductService {
     }
 
     /**
-     * Retrieves all {@link Product} saved in data base.
-     *
-     * @return found products
-     */
-    public List<Product> findAll() {
-        return productRepository.findAll();
-    }
-
-    /**
-     * Searches for {@link Product} saved in data base.
-     *
-     * @param name used for searching products containing given param ignoring case
-     * @param minPrice used for searching products with prices greater equal than given value
-     * @param maxPrice used for searching products with prices lesser equal than given value
-     * @return found products matching given parameters
-     */
-    public List<Product> searchNullable(String name, Double minPrice, Double maxPrice) {
-        if (null != name && null != minPrice && null != maxPrice) {
-            return productRepository.findByNameIgnoreCaseContainingAndPriceGreaterThanEqualAndPriceLessThanEqual(
-                name, minPrice, maxPrice);
-        } else if (null != name && null != minPrice) {
-            return productRepository.findByNameIgnoreCaseContainingAndPriceGreaterThanEqual(
-                name, minPrice);
-        } else if (null != name && null != maxPrice) {
-            return productRepository.findByNameIgnoreCaseContainingAndPriceLessThanEqual(
-                name, maxPrice);
-        } else if (null != minPrice && null != maxPrice) {
-            return productRepository.findByPriceGreaterThanEqualAndPriceLessThanEqual(
-                minPrice, maxPrice);
-        } else if (null != name) {
-            return productRepository.findByNameIgnoreCaseContaining(name);
-        } else if (null != minPrice) {
-            return productRepository.findByPriceGreaterThanEqual(minPrice);
-        } else if (null != maxPrice) {
-            return productRepository.findByPriceLessThanEqual(maxPrice);
-        } else {
-            return productRepository.findAll();
-        }
-    }
-
-    /**
      * Searches for {@link Product} saved in data base.
      *
      * @param name used for searching products containing given param ignoring case
@@ -98,6 +57,12 @@ public class ProductService {
      * @return found products matching given parameters
      */
     public Page<Product> search(String name, Double minPrice, Double maxPrice, Pageable pageable) {
+        if (null == minPrice) {
+            minPrice = 0d;
+        }
+        if (null == maxPrice) {
+            minPrice = Double.MAX_VALUE;
+        }
         return productRepository
             .findByNameIgnoreCaseContainingAndPriceGreaterThanEqualAndPriceLessThanEqual(
                 name, minPrice, maxPrice, pageable);
@@ -111,8 +76,7 @@ public class ProductService {
      */
     public void remove(Long id) {
         // we are using get method here to avoid code duplication
-        Product product = get(id);
-        productRepository.delete(product);
+        productRepository.delete(get(id));
     }
 
     /**
@@ -132,24 +96,6 @@ public class ProductService {
 
         product.setId(id);
         return productRepository.save(product);
-    }
-
-    /**
-     * Retrieves {@link Product} by name ignoring case,
-     * if none found {@link NotFoundException} will be thrown.
-     *
-     * @param name product id that will be updated
-     * @return found product
-     */
-    public Product findProductByNameIgnoreCase(String name) {
-        return productRepository.findByNameIgnoreCase(name)
-            .orElseThrow(() -> new NotFoundException(String.format("Product with name %s not found", name)));
-    }
-
-    public Page<Product> findProductByNameAndReceipt(String name, Long receiptId, Pageable pageable) {
-        Receipt receipt = receiptRepository.findById(receiptId)
-            .orElseThrow(() -> new NotFoundException(String.format("Receipt with id %s not found", receiptId)));
-        return productRepository.search(name, receipt, pageable);
     }
 
     // validates name uniqueness,

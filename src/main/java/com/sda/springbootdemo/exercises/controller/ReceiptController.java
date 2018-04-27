@@ -6,10 +6,11 @@ import com.sda.springbootdemo.exercises.model.Receipt;
 import com.sda.springbootdemo.exercises.repository.ReceiptRepository;
 import com.sda.springbootdemo.exercises.service.ReceiptService;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.List;
+import java.time.LocalTime;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
@@ -45,12 +46,20 @@ public class ReceiptController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<Receipt> search(
+    public Page<Receipt> search(
+            @RequestParam(value = "buyer", required = false) String buyer,
             @RequestParam(value = "startDate", required = false)
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
             @RequestParam(value = "endDate", required = false)
-            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
-        return receiptService.search(startDate, endDate);
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
+            @RequestParam(value = "productName", required = false) String productName,
+            Pageable pageable) {
+        return receiptRepository.search(
+            buyer,
+            startDate.atStartOfDay(),
+            endDate.atTime(LocalTime.MAX),
+            productName,
+            pageable);
     }
 
     @GetMapping("/{id}")

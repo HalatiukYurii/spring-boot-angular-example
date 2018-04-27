@@ -1,12 +1,14 @@
 package com.sda.springbootdemo.exercises.controller;
 
+import static java.util.stream.Collectors.toList;
+
+import com.sda.springbootdemo.exercises.dto.ProductDto;
 import com.sda.springbootdemo.exercises.model.Product;
-import com.sda.springbootdemo.exercises.model.Receipt2;
 import com.sda.springbootdemo.exercises.repository.ProductRepository;
 import com.sda.springbootdemo.exercises.service.ProductService;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -41,8 +43,8 @@ public class ProductController {
      */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Product create(@RequestBody Product product) {
-        return productService.create(product);
+    public ProductDto create(@RequestBody Product product) {
+        return new ProductDto(productService.create(product));
     }
 
     /**
@@ -58,10 +60,10 @@ public class ProductController {
      */
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Product update(
+    public ProductDto update(
         @RequestBody Product product,
         @PathVariable("id") Long id) {
-        return productService.update(product, id);
+        return new ProductDto(productService.update(product, id));
     }
 
     /**
@@ -75,8 +77,8 @@ public class ProductController {
      */
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Product get(@PathVariable("id") Long id) {
-        return productService.get(id);
+    public ProductDto get(@PathVariable("id") Long id) {
+        return new ProductDto(productService.get(id));
     }
 
     /**
@@ -92,12 +94,21 @@ public class ProductController {
      */
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Page<Product> search(
+    public Page<ProductDto> search(
         @RequestParam(value = "name", required = false, defaultValue = "") String name,
-        @RequestParam(value = "minPrice", required = false, defaultValue = "0") Double minPrice,
-        @RequestParam(value = "maxPrice", required = false, defaultValue = "10000") Double maxPrice,
+        @RequestParam(value = "minPrice", required = false) Double minPrice,
+        @RequestParam(value = "maxPrice", required = false) Double maxPrice,
         Pageable pageable) {
-        return productService.search(name, minPrice, maxPrice, pageable);
+
+        Page<Product> resut = productService.search(name, minPrice, maxPrice, pageable);
+
+        return new PageImpl(
+            resut
+                .stream()
+                .map(ProductDto::new)
+                .collect(toList()),
+            pageable,
+            resut.getTotalElements());
     }
 
     /**
@@ -112,28 +123,5 @@ public class ProductController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void remove(@PathVariable("id") Long id) {
         productService.remove(id);
-    }
-
-    /**
-     * Called for GET serverUrl/products/byName?name={name} requests.
-     * Used for retrieving existing {@link Product} by name ignoring case.
-     * Returns 200 HTTP code if product with given name was found.
-     * Returns 404 HTTP code if product with given name was not found.
-     *
-     * @param name request parameter used for searching by name
-     * @return found product with given name
-     */
-    @GetMapping("/byName")
-    @ResponseStatus(HttpStatus.OK)
-    public List<Receipt2> findByName(
-        @RequestParam(value = "name") String name) {
-        return productRepository.search(name);
-    }
-
-    @GetMapping("/byNamePaged")
-    @ResponseStatus(HttpStatus.OK)
-    public Page<Product> findByName(
-        Pageable pageable) {
-        return productRepository.findByNameIgnoreCaseContaining("", pageable);
     }
 }

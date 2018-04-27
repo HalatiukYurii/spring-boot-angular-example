@@ -10,14 +10,18 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductDto extends BaseProductDto {
+public class ProductDto extends BaseDto {
 
-    private BaseReceiptDto receipt;
+    protected String name;
+    protected Double price;
 
     public ProductDto(Product product) {
-        super(product);
-        this.receipt = null == product.getReceipt()
-                ? null
-                : new BaseReceiptDto(product.getReceipt());
+        this(product.getId(), product.getName(), product.getPrice());
+    }
+
+    public ProductDto(Long id, String name, Double price) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
     }
 }
