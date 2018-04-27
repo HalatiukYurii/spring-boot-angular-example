@@ -54,10 +54,11 @@ public class ReceiptController {
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
             @RequestParam(value = "productName", required = false) String productName,
             Pageable pageable) {
+
         return receiptRepository.search(
             buyer,
-            startDate.atStartOfDay(),
-            endDate.atTime(LocalTime.MAX),
+            null != startDate ? startDate.atStartOfDay() : null,
+            null != endDate ? endDate.atTime(LocalTime.MAX) : null,
             productName,
             pageable);
     }
