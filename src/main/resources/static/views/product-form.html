@@ -1,0 +1,14 @@
+<div class="section">
+  <h3>New Product</h3>
+
+  <form name="product-form" ng-submit="controller.add()">
+    <label for="name">Product name</label>
+    <input ng-model="controller.product.name" id="name"/>
+
+    <label for="price">Price</label>
+    <input type="number" step="0.01"
+           ng-model="controller.product.price" id="price">
+
+    <button type="submit">Add</button>
+  </form>
+</div>

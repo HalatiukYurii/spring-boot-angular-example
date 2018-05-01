@@ -1,6 +1,11 @@
 <div class="section">
-    <h3>{{headingTitle}}</h3>
+    <h3>{{controller.headingTitle}}</h3>
     <div>
+        <form name="search-product" ng-submit="controller.search()">
+            <label for="name">Name</label>
+            <input id="name" ng-model="controller.params.name"/>
+            <button type="submit">Search</button>
+        </form>
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -9,9 +14,9 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>kawa</td>
-                    <td>10.10</td>
+                <tr ng-repeat="product in controller.products">
+                    <td>{{product.name}}</td>
+                    <td>{{product.price}}</td>
                 </tr>
             </tbody>
         </table>

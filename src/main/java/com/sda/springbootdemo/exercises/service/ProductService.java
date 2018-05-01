@@ -61,7 +61,7 @@ public class ProductService {
             minPrice = 0d;
         }
         if (null == maxPrice) {
-            minPrice = Double.MAX_VALUE;
+            maxPrice = Double.MAX_VALUE;
         }
         return productRepository
             .findByNameIgnoreCaseContainingAndPriceGreaterThanEqualAndPriceLessThanEqual(
