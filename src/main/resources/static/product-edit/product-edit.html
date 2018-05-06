@@ -1,0 +1,16 @@
+<div class="section">
+    <h3 ng-if="!vm.product.id">Add Product</h3>
+    <h3 ng-if="vm.product.id">Edit Product</h3>
+    <form name="product-form" ng-submit="vm.save()">
+        <div class="form-group">
+            <label for="name">Product name</label>
+            <input class="form-control" ng-model="vm.product.name" id="name"/>
+        </div>
+        <div class="form-group">
+            <label for="price">Price</label>
+            <input type="number" step="0.01" class="form-control"
+                   ng-model="vm.product.price" id="price">
+        </div>
+        <button class="btn btn-primary" type="submit">Save Product</button>
+    </form>
+</div>

@@ -1,0 +1,36 @@
+<div class="section">
+    <h3>Receipts</h3>
+    <form name="search-receipt" ng-submit="vm.search()">
+        <div class="form-group">
+            <label for="buyer">Buyer</label>
+            <input class="form-control" id="buyer" ng-model="vm.params.buyer"/>
+        </div>
+        <div class="form-group">
+            <label for="startDate">Start Date</label>
+            <input class="form-control" type="datetime-local" id="startDate" ng-model="vm.params.startDate"/>
+        </div>
+        <div class="form-group">
+            <label for="endDate">End Date</label>
+            <input class="form-control" type="datetime-local" id="endDate" ng-model="vm.prams.endDate"/>
+        </div>
+        <button class="btn btn-primary" type="submit">Search</button>
+    </form>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Buyer</th>
+                <th>Date</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="receipt in vm.receipts">
+                <td>{{receipt.buyer}}</td>
+                <td>{{receipt.date}}</td>
+                <td>
+                    <button class="btn btn-default" ng-click="vm.editReceipt(receipt)">Edit</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

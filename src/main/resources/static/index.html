@@ -21,21 +21,62 @@
                 <div class="navbar-header">
                     <a class="navbar-brand" href="#">Shop</a>
                 </div>
-                <ul class="nav navbar-nav">
-                    <li><a href="#/products">Products</a></li>
-                    <li><a href="#/addProduct">Add Product</a></li>
-                    <li><a href="#/users">Users</a></li>
-                </ul>
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Products <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#/products">List of Products</a></li>
+                                <li><a href="#/products/add">Add Product</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Receipts <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#/receipts">List of Receipts</a></li>
+                                <li><a href="#/receipts/add">Add Receipt</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </nav>
 
         <div ng-view></div>
 
+        <script src="/webjars/jquery/2.2.4/jquery.js"></script>
+        <script src="/webjars/bootstrap/3.3.6/js/bootstrap.js"></script>
         <script src="/webjars/angularjs/1.4.9/angular.js"></script>
         <script src="/webjars/angularjs/1.4.9/angular-resource.js"></script>
         <script src="/webjars/angularjs/1.4.9/angular-route.js"></script>
+
+        <script src="/settings/settings.module.js"></script>
+        <script src="/settings/server-url.constant.js"></script>
+
+        <script src="/product/product.module.js"></script>
+        <script src="/product/product.service.js"></script>
+
+        <script src="/product-list/product-list.module.js"></script>
+        <script src="/product-list/product-list.controller.js"></script>
+        <script src="/product-list/product-list.routes.js"></script>
+
+        <script src="/product-edit/product-edit.module.js"></script>
+        <script src="/product-edit/product-edit.controller.js"></script>
+        <script src="/product-edit/product-edit.routes.js"></script>
+
+        <script src="/receipt/receipt.module.js"></script>
+        <script src="/receipt/receipt.service.js"></script>
+
+        <script src="/receipt-list/receipt-list.module.js"></script>
+        <script src="/receipt-list/receipt-list.controller.js"></script>
+        <script src="/receipt-list/receipt-list.routes.js"></script>
+
+        <script src="/receipt-edit/receipt-edit.module.js"></script>
+        <script src="/receipt-edit/receipt-edit.controller.js"></script>
+        <script src="/receipt-edit/receipt-edit.routes.js"></script>
+
         <script src="/js/app.js"></script>
-        <script src="/js/controller.js"></script>
+
         <link rel="stylesheet" href="/webjars/bootstrap/3.3.6/css/bootstrap.css">
     </body>
 </html>

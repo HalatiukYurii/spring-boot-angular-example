@@ -1,0 +1,43 @@
+<div class="section">
+    <h3 ng-if="vm.receipt.id">Edit Receipt</h3>
+    <h3 ng-if="!vm.receipt.id">Add Receipt</h3>
+    <form id="receipt-form" ng-submit="vm.saveReceipt()">
+        <div class="form-group">
+            <label for="buyer">Buyer</label>
+            <input class="form-control" ng-model="vm.receipt.buyer" id="buyer" required/>
+        </div>
+        <div class="form-group">
+            <label for="date">Date</label>
+            <input type="datetime-local" class="form-control"
+                   ng-model="vm.receipt.date" id="date" required>
+        </div>
+    </form>
+
+    <form class="form-inline" id="receipt-product-form" ng-submit="vm.addProduct()">
+        <div class="form-group">
+            <label for="product">Product</label>
+            <select id="product" class="form-control" ng-options="product.name for product in vm.products" ng-model="vm.selectedProduct" required></select>
+        </div>
+        <button class="btn btn-success" type="submit">Add Product</button>
+    </form>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Product Name</th>
+            <th>Price</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="product in vm.receipt.products">
+            <td>{{product.name}}</td>
+            <td>{{product.price}}</td>
+            <td>
+                <button class="btn btn-danger" ng-click="vm.removeProduct()">Remove</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <button class="btn btn-primary" type="submit" form="receipt-form">Save Receipt</button>
+</div>
