@@ -11,7 +11,6 @@ function route($routeProvider) {
         controller: 'ProductListController',
         resolve: {
             products: function($routeParams, productService) {
-                console.log($routeParams);
                 return productService.query($routeParams)
                 .then(function(response) {
                     return response.content;

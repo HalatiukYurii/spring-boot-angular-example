@@ -5,11 +5,13 @@
         <div class="form-group">
             <label for="name">Product name</label>
             <input class="form-control" ng-model="vm.product.name" id="name"/>
+            <p ng-if="vm.errors.name" class="error">{{vm.errors.name}}</p>
         </div>
         <div class="form-group">
             <label for="price">Price</label>
             <input type="number" step="0.01" class="form-control"
                    ng-model="vm.product.price" id="price">
+            <p ng-if="vm.errors.price" class="error">{{vm.errors.price}}</p>
         </div>
         <button class="btn btn-primary" type="submit">Save Product</button>
     </form>

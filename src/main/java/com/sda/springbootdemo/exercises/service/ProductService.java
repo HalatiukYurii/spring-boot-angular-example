@@ -1,5 +1,6 @@
 package com.sda.springbootdemo.exercises.service;
 
+import com.sda.springbootdemo.exercises.exception.BindingResultException;
 import com.sda.springbootdemo.exercises.exception.NotFoundException;
 import com.sda.springbootdemo.exercises.exception.ValidationException;
 import com.sda.springbootdemo.exercises.model.Product;
@@ -12,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 
 @Service
 @Transactional
@@ -30,8 +33,8 @@ public class ProductService {
      * @param product product to be saved
      * @return saved product returned from repository
      */
-    public Product create(Product product) {
-        validateProductName(product.getName(), null);
+    public Product create(Product product, BindingResult bindingResult) {
+        validateProduct(product.getName(), null, bindingResult);
         return productRepository.save(product);
     }
 
@@ -88,26 +91,26 @@ public class ProductService {
      * @param id product id that will be updated
      * @return saved product returned from repository
      */
-    public Product update(Product product, Long id) {
+    public Product update(Product product, Long id, BindingResult bindingResult) {
         // we are using get method here to avoid code duplication
         Product existingProduct = get(id);
 
-        validateProductName(product.getName(), existingProduct.getName());
+        validateProduct(product.getName(), existingProduct.getName(), bindingResult);
 
         product.setId(id);
         return productRepository.save(product);
     }
 
-    // validates name uniqueness,
-    // current name is for the case we are updating product, but not changing the name,
-    // for create current name should be null
-    private void validateProductName(String name, String currentName) {
-        if (null == name) {
-            throw new ValidationException("Product name is required");
+        // validates name uniqueness,
+        // current name is for the case we are updating product, but not changing the name,
+        // for create current name should be null
+    private void validateProduct(String name, String currentName, BindingResult bindingResult) {
+        if (productRepository.existsByName(name) && !name.equals(currentName)) {
+            bindingResult.addError(new FieldError("Product", "name", String.format("Product with %s name already exists", name)));
         }
 
-        if (productRepository.existsByName(name) && !name.equals(currentName)) {
-            throw new ValidationException(String.format("Product name already exists %s", name));
+        if (bindingResult.hasErrors()) {
+            throw new BindingResultException(bindingResult);
         }
     }
 }
