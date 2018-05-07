@@ -12,24 +12,19 @@ function controller(receiptService, $location, products, receipt, $routeParams) 
         products: []
     };
     vm.products = products;
-    vm.errors = {};
 
     function saveReceipt() {
-        var promise;
-        vm.errors = {};
-
         if (vm.receipt.id) {
-            promise = receiptService.update(vm.receipt)
+            receiptService.update(vm.receipt)
+            .then(function() {
+                $location.path('/receipts');
+            });
         } else {
-            promise = receiptService.create(vm.receipt)
+            receiptService.create(vm.receipt)
+            .then(function() {
+                $location.path('/receipts');
+            });
         }
-
-        promise.then(function() {
-            $location.path('/receipts');
-        })
-        .catch(function(response) {
-            vm.errors = response.data;
-        });
     }
 
     function addProduct() {

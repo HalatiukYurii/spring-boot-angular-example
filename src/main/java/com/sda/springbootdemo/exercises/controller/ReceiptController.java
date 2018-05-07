@@ -39,7 +39,7 @@ public class ReceiptController {
     @ResponseStatus(HttpStatus.CREATED)
     public Receipt create(@RequestBody @Valid Receipt receipt, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            throw new BindingResultException(bindingResult);
+            throw new BindingResultException(bindingResult.getFieldErrors());
         }
         return receiptRepository.save(receipt);
     }
@@ -54,6 +54,7 @@ public class ReceiptController {
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
             @RequestParam(value = "productName", required = false) String productName,
             Pageable pageable) {
+
         return receiptRepository.search(
             buyer,
             null != startDate ? startDate.atStartOfDay() : null,

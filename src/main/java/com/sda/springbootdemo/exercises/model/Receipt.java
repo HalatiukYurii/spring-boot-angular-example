@@ -29,7 +29,6 @@ import lombok.ToString;
 public class Receipt extends BaseEntity {
 
     @NotNull
-    @Size(min = 1, max = 255)
     @Column(nullable = false)
     private String buyer;
 

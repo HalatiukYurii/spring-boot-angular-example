@@ -3,16 +3,14 @@ package com.sda.springbootdemo.exercises.controller;
 import com.sda.springbootdemo.exercises.exception.BindingResultException;
 import com.sda.springbootdemo.exercises.exception.NotFoundException;
 import com.sda.springbootdemo.exercises.exception.ValidationException;
+import java.util.List;
 import org.springframework.http.HttpStatus;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @RestControllerAdvice
 public class ControllerExceptionHandler {
@@ -58,15 +56,7 @@ public class ControllerExceptionHandler {
     @ExceptionHandler(BindingResultException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
-    public Map<String, String> handleNotFoundException(BindingResultException ex) {
-        return getErrors(ex.getBindingResult());
-    }
-
-    private Map<String, String> getErrors(final BindingResult bindingResult) {
-        Map<String, String> errors = new HashMap<>();
-        for (FieldError error : bindingResult.getFieldErrors()) {
-            errors.put(error.getField(), error.getDefaultMessage());
-        }
-        return errors;
+    public List<FieldError> handleNotFoundException(BindingResultException ex) {
+        return ex.getErrors();
     }
 }
