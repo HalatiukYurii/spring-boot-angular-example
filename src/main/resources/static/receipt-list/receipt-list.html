@@ -20,15 +20,28 @@
             <tr>
                 <th>Buyer</th>
                 <th>Date</th>
+                <th>Product Name</th>
+                <th>Price</th>
                 <th></th>
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="receipt in vm.receipts">
+            <tr ng-repeat-start="receipt in vm.receipts">
                 <td>{{receipt.buyer}}</td>
-                <td>{{receipt.date}}</td>
+                <td>{{receipt.date | date }}</td>
+                <td></td>
+                <td></td>
                 <td>
-                    <button class="btn btn-default" ng-click="vm.editReceipt(receipt)">Edit</button>
+                    <button class="btn btn-default" ng-click="vm.editReceipt(receipt)">Edit Receipt</button>
+                </td>
+            </tr>
+            <tr ng-repeat="product in receipt.products | orderBy: 'price'" ng-repeat-end>
+                <td></td>
+                <td></td>
+                <td>{{product.name}}</td>
+                <td>{{product.price}}</td>
+                <td>
+                    <button class="btn btn-default" ng-click="vm.editProduct(product)">Edit Product</button>
                 </td>
             </tr>
         </tbody>

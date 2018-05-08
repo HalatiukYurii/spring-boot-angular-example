@@ -1,15 +1,14 @@
 package com.sda.springbootdemo.exercises.exception;
 
-import java.util.List;
 import lombok.Getter;
-import org.springframework.validation.FieldError;
+import org.springframework.validation.BindingResult;
 
 public class BindingResultException extends RuntimeException {
 
     @Getter
-    private final List<FieldError> errors;
+    private final BindingResult bindingResult;
 
-    public BindingResultException(List<FieldError> errors) {
-        this.errors = errors;
+    public BindingResultException(BindingResult bindingResult) {
+        this.bindingResult = bindingResult;
     }
 }

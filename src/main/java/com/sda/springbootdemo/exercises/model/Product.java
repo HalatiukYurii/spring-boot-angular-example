@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 
 @Getter
 @Setter
@@ -24,9 +25,11 @@ import javax.persistence.Table;
 public class Product extends BaseEntity{
 
     @NotNull
+    @Size(min = 1, max = 255)
     @Column(unique = true, nullable = false)
     private String name;
 
+    @NotNull
     @Column(nullable = false)
     private Double price;
 }

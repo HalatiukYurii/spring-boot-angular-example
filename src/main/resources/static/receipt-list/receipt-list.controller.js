@@ -7,6 +7,7 @@ function controller(receipts, $routeParams, $route, $location) {
 
     vm.search = search;
     vm.editReceipt = editReceipt;
+    vm.editProduct = editProduct;
 
     vm.params = $routeParams;
     vm.receipts = receipts;
@@ -17,7 +18,10 @@ function controller(receipts, $routeParams, $route, $location) {
     }
 
     function editReceipt(receipt) {
-        console.log('/receipts/edit/' + receipt.id);
         $location.path('/receipts/edit/' + receipt.id);
+    }
+
+    function editProduct(product) {
+        $location.path('/products/edit/' + product.id);
     }
 }

@@ -10,12 +10,8 @@ function route($routeProvider) {
         controllerAs: 'vm',
         controller: 'ProductListController',
         resolve: {
-            products: function($routeParams, productService) {
-                console.log($routeParams);
-                return productService.query($routeParams)
-                .then(function(response) {
-                    return response.content;
-                });
+            productPage: function($routeParams, productService) {
+                return productService.query($routeParams);
             }
         }
     });
