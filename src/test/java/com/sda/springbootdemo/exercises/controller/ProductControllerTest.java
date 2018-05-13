@@ -6,8 +6,10 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.sda.springbootdemo.exercises.exception.NotFoundException;
 import com.sda.springbootdemo.exercises.model.Product;
 import com.sda.springbootdemo.exercises.repository.ProductRepository;
 import com.sda.springbootdemo.exercises.service.ProductService;
@@ -27,7 +29,7 @@ public class ProductControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private ProductService service;
+    private ProductService productService;
 
     @MockBean
     private ProductRepository repository;
@@ -35,10 +37,27 @@ public class ProductControllerTest {
     @Test
     public void shouldGetAllProducts() throws Exception {
         Long id = 1L;
-        when(service.get(eq(id))).thenReturn(new Product("some product", 1.1));
-        this.mockMvc.perform(get("/products/" + id))
+        when(productService.get(eq(id)))
+            .thenReturn(new Product("some product", 1.1));
+
+        mockMvc.perform(get("/products/" + id))
             .andDo(print())
             .andExpect(status().isOk());
-        verify(service, times(1)).get(id);
+
+        verify(productService, times(1)).get(id);
+    }
+
+    @Test
+    public void shouldReturn404WhenNoProductFound() throws Exception {
+        Long id = 1L;
+        when(productService.get(eq(id)))
+            .thenThrow(new NotFoundException("no product found"));
+
+        mockMvc.perform(get("/products/" + id))
+            .andDo(print())
+            .andExpect(status().isNotFound())
+            .andExpect(content().string("no product found"));
+
+        verify(productService, times(1)).get(id);
     }
 }

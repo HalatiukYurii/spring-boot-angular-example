@@ -47,7 +47,8 @@ public class ProductService {
      */
     public Product get(Long id) {
         return productRepository.findById(id)
-            .orElseThrow(() -> new NotFoundException(String.format("Product with id %s not found", id)));
+            .orElseThrow(() ->
+                new NotFoundException(String.format("Product with id %s not found", id)));
     }
 
     /**
@@ -112,5 +113,16 @@ public class ProductService {
         if (bindingResult.hasErrors()) {
             throw new BindingResultException(bindingResult);
         }
+    }
+
+    public Product updateNew(Product product, Long id) {
+      Product existingProduct = get(id);
+
+      if (product.getName() == null) {
+          throw new ValidationException("Name required");
+      }
+
+      product.setId(id);
+      return productRepository.save(product);
     }
 }
