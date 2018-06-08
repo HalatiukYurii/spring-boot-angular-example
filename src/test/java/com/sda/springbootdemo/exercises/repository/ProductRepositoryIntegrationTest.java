@@ -1,8 +1,6 @@
 package com.sda.springbootdemo.exercises.repository;
 
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import com.sda.springbootdemo.exercises.model.Product;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,6 +11,8 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
@@ -25,11 +25,19 @@ public class ProductRepositoryIntegrationTest {
     @Autowired
     private ProductRepository repository;
 
+    private Product product;
+
+    @Before
+    public void setUp() {
+        product = repository.save(new Product("asd", 10d));
+    }
+
     @Test
-    public void shouldGetProductById() throws Exception {
-        this.entityManager.persist(new Product("some product", 12.1));
-        Product product = repository.getOne(1L);
-        assertThat(product.getName()).isEqualTo("some product");
-        assertThat(product.getPrice()).isEqualTo(12.1);
+    public void shouldGetProductById1() {
+        System.out.println(repository.findAll().size());
+        System.out.println(product.getId());
+        Product foundProduct = repository.findById(product.getId()).get();
+        assertThat(foundProduct.getName()).isEqualTo(product.getName());
+        assertThat(foundProduct.getPrice()).isEqualTo(product.getPrice());
     }
 }

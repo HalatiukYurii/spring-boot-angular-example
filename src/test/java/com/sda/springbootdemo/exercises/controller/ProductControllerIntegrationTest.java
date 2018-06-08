@@ -23,7 +23,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(ProductController.class)
-public class ProductControllerTest {
+public class ProductControllerIntegrationTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -38,7 +38,7 @@ public class ProductControllerTest {
     public void shouldGetAllProducts() throws Exception {
         Long id = 1L;
         when(productService.get(eq(id)))
-            .thenReturn(new Product("some product", 1.1));
+                .thenReturn(new Product("some product", 1.1));
 
         mockMvc.perform(get("/products/" + id))
             .andDo(print())

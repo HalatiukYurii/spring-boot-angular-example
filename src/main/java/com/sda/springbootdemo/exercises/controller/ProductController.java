@@ -104,15 +104,15 @@ public class ProductController {
         @RequestParam(value = "maxPrice", required = false) Double maxPrice,
         Pageable pageable) {
 
-        Page<Product> resut = productService.search(name, minPrice, maxPrice, pageable);
+        Page<Product> result = productService.search(name, minPrice, maxPrice, pageable);
 
         return new PageImpl(
-            resut
+            result
                 .stream()
                 .map(ProductDto::new)
                 .collect(toList()),
             pageable,
-            resut.getTotalElements());
+            result.getTotalElements());
     }
 
     /**

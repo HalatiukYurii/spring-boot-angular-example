@@ -22,7 +22,7 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 @Entity
 @Table(name = "products")
-public class Product extends BaseEntity{
+public class Product extends BaseEntity {
 
     @NotNull
     @Size(min = 1, max = 255)
