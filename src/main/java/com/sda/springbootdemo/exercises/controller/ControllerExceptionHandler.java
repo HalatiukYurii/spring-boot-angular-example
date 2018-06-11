@@ -2,6 +2,7 @@ package com.sda.springbootdemo.exercises.controller;
 
 import com.sda.springbootdemo.exercises.exception.BindingResultException;
 import com.sda.springbootdemo.exercises.exception.NotFoundException;
+import com.sda.springbootdemo.exercises.exception.UnauthorizedException;
 import com.sda.springbootdemo.exercises.exception.ValidationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
@@ -16,6 +17,21 @@ import java.util.Map;
 
 @RestControllerAdvice
 public class ControllerExceptionHandler {
+
+    /**
+     * Handles exceptions for all {@link ValidationException}
+     * thrown in {@link org.springframework.web.bind.annotation.RestController} methods.
+     * For this exception server will respond with code 403.
+     *
+     * @param ex instance of exception
+     * @return message from exception that will be used for response
+     */
+    @ExceptionHandler(UnauthorizedException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ResponseBody
+    public String handleUnauthorizedException(UnauthorizedException ex) {
+        return ex.getMessage();
+    }
 
     /**
      * Handles exceptions for all {@link ValidationException}

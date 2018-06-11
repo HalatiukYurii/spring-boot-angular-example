@@ -12,6 +12,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.UUID;
 
 import static com.jayway.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.containsString;
@@ -33,7 +34,7 @@ public class ReceiptControllerIntegrationTest {
     @Before
     public void setUp() {
         receipt = new Receipt("Tomek", LocalDateTime.now(), null);
-        receipt.setId(1L);
+        receipt.setId(UUID.randomUUID());
         when(repository.findById(receipt.getId()))
                 .thenReturn(Optional.of(receipt));
     }

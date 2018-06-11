@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/products")
@@ -65,7 +66,7 @@ public class ProductController {
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ProductDto update(
-        @PathVariable("id") Long id,
+        @PathVariable("id") UUID id,
         @RequestBody @Valid Product product, BindingResult bindingResult) {
         return new ProductDto(productService.update(product, id, bindingResult));
     }
@@ -81,7 +82,7 @@ public class ProductController {
      */
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ProductDto get(@PathVariable("id") Long id) {
+    public ProductDto get(@PathVariable("id") UUID id) {
         return new ProductDto(productService.get(id));
     }
 
@@ -125,7 +126,7 @@ public class ProductController {
      */
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void remove(@PathVariable("id") Long id) {
+    public void remove(@PathVariable("id") UUID id) {
         productService.remove(id);
     }
 }

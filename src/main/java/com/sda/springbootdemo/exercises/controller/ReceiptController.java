@@ -7,6 +7,7 @@ import com.sda.springbootdemo.exercises.repository.ReceiptRepository;
 import com.sda.springbootdemo.exercises.service.ReceiptService;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.UUID;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -64,14 +65,14 @@ public class ReceiptController {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Receipt get(@PathVariable("id") Long id) {
+    public Receipt get(@PathVariable("id") UUID id) {
         return receiptRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(String.format("No receipt find with %s id", id)));
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Receipt update(@PathVariable("id") Long id, @RequestBody Receipt receipt) {
+    public Receipt update(@PathVariable("id") UUID id, @RequestBody Receipt receipt) {
         if (!receiptRepository.existsById(id)) {
             throw new NotFoundException(String.format("No receipt found with %s id", id));
         }
@@ -81,7 +82,7 @@ public class ReceiptController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void remove(@PathVariable("id") Long id) {
+    public void remove(@PathVariable("id") UUID id) {
         Receipt receipt = receiptRepository.findById(id)
             .orElseThrow(() -> new NotFoundException(String.format("Receipt with id %s not found", id)));
         receiptRepository.delete(receipt);

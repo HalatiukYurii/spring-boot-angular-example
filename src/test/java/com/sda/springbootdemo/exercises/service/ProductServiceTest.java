@@ -16,6 +16,8 @@ import com.sda.springbootdemo.exercises.model.Product;
 import com.sda.springbootdemo.exercises.repository.ProductRepository;
 import java.util.Collections;
 import java.util.Optional;
+import java.util.UUID;
+
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -50,7 +52,7 @@ public class ProductServiceTest {
     @Before
     public void setUp() {
         product = new Product("name", 1.1);
-        product.setId(1L);
+        product.setId(UUID.randomUUID());
 
         pageable = new PageRequest(0, 10);
 
@@ -120,29 +122,5 @@ public class ProductServiceTest {
       verify(productRepository, times(1))
           .findByNameIgnoreCaseContainingAndPriceGreaterThanEqualAndPriceLessThanEqual(
               "name", 10d, Double.MAX_VALUE, pageable);
-    }
-
-    @Test
-    public void shouldUpdateProduct() {
-        doReturn(product)
-            .when(productRepository).save(any(Product.class));
-
-        Product result = productService.updateNew(product, 1L);
-
-        assertEquals(product, result);
-        verify(productRepository, times(1)).save(product);
-        verify(productRepository, times(1)).findById(1L);
-    }
-
-    @Test
-    public void shouldNotSaveProduct() {
-        expectedEx.expect(ValidationException.class);
-        expectedEx.expectMessage("Name required");
-
-        Product newProduct = new Product(null, 100d);
-        productService.updateNew(newProduct, 1L);
-
-        verify(productRepository, never()).save(any(Product.class));
-        verify(productRepository, times(1)).findById(1L);
     }
 }

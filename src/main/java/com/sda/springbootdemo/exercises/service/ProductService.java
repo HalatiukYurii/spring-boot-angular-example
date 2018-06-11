@@ -8,6 +8,7 @@ import com.sda.springbootdemo.exercises.model.Receipt;
 import com.sda.springbootdemo.exercises.repository.ProductRepository;
 import com.sda.springbootdemo.exercises.repository.ReceiptRepository;
 import java.util.List;
+import java.util.UUID;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -45,7 +46,7 @@ public class ProductService {
      * @param id product id that will be retrieved
      * @return found product
      */
-    public Product get(Long id) {
+    public Product get(UUID id) {
         return productRepository.findById(id)
             .orElseThrow(() ->
                 new NotFoundException(String.format("Product with id %s not found", id)));
@@ -78,7 +79,7 @@ public class ProductService {
      *
      * @param id product id that will be removed
      */
-    public void remove(Long id) {
+    public void remove(UUID id) {
         // we are using get method here to avoid code duplication
         productRepository.delete(get(id));
     }
@@ -92,7 +93,7 @@ public class ProductService {
      * @param id product id that will be updated
      * @return saved product returned from repository
      */
-    public Product update(Product product, Long id, BindingResult bindingResult) {
+    public Product update(Product product, UUID id, BindingResult bindingResult) {
         // we are using get method here to avoid code duplication
         Product existingProduct = get(id);
 
@@ -113,16 +114,5 @@ public class ProductService {
         if (bindingResult.hasErrors()) {
             throw new BindingResultException(bindingResult);
         }
-    }
-
-    public Product updateNew(Product product, Long id) {
-      Product existingProduct = get(id);
-
-      if (product.getName() == null) {
-          throw new ValidationException("Name required");
-      }
-
-      product.setId(id);
-      return productRepository.save(product);
     }
 }

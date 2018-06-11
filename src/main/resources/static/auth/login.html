@@ -1,0 +1,16 @@
+<div class="section">
+    <h3>Login</h3>
+    <form id="login-form" ng-submit="vm.login()">
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input class="form-control" ng-model="vm.username" id="username"/>
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" class="form-control"
+                   ng-model="vm.password" id="password">
+        </div>
+    </form>
+
+    <button class="btn btn-primary" type="submit" form="login-form">Login</button>
+</div>

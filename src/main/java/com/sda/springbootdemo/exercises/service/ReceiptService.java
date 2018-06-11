@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class ReceiptService {
@@ -22,7 +23,7 @@ public class ReceiptService {
     @Autowired
     private ReceiptRepository receiptRepository;
 
-    public Double summary(Long id) {
+    public Double summary(UUID id) {
         Receipt receipt = receiptRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(String.format("Receipt with %s not found", id)));
 
@@ -32,7 +33,7 @@ public class ReceiptService {
                 .sum();
     }
 
-    public Double summary(Collection<Long> ids) {
+    public Double summary(Collection<UUID> ids) {
         List<Receipt> receipts;
         if (isEmpty(ids)) {
             receipts = receiptRepository.findAll();

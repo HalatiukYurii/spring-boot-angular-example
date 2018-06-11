@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.UUID;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -19,7 +21,7 @@ public class ProductDto extends BaseDto {
         this(product.getId(), product.getName(), product.getPrice());
     }
 
-    public ProductDto(Long id, String name, Double price) {
+    public ProductDto(UUID id, String name, Double price) {
         this.id = id;
         this.name = name;
         this.price = price;

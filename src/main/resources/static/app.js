@@ -3,7 +3,8 @@ var app = angular.module('app', [
     'product-list',
     'product-edit',
     'receipt-list',
-    'receipt-edit'
+    'receipt-edit',
+    'auth'
 ]);
 
 app.config(function($routeProvider) {

@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Getter
@@ -25,7 +26,7 @@ public class ReceiptDto extends BaseDto {
         this(receipt.getId(), receipt.getBuyer(), receipt.getDate(), receipt.getProducts());
     }
 
-    public ReceiptDto(Long id, String buyersName, LocalDateTime date, List<Product> products) {
+    public ReceiptDto(UUID id, String buyersName, LocalDateTime date, List<Product> products) {
         this.id = id;
         this.buyersName = buyersName;
         this.date = date;

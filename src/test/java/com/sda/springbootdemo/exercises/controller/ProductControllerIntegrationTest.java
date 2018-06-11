@@ -21,6 +21,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.UUID;
+
 @RunWith(SpringRunner.class)
 @WebMvcTest(ProductController.class)
 public class ProductControllerIntegrationTest {
@@ -34,9 +36,10 @@ public class ProductControllerIntegrationTest {
     @MockBean
     private ProductRepository repository;
 
+    private UUID id = UUID.randomUUID();
+
     @Test
     public void shouldGetAllProducts() throws Exception {
-        Long id = 1L;
         when(productService.get(eq(id)))
                 .thenReturn(new Product("some product", 1.1));
 
@@ -49,7 +52,6 @@ public class ProductControllerIntegrationTest {
 
     @Test
     public void shouldReturn404WhenNoProductFound() throws Exception {
-        Long id = 1L;
         when(productService.get(eq(id)))
             .thenThrow(new NotFoundException("no product found"));
 
