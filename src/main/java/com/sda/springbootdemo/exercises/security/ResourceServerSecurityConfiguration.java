@@ -73,7 +73,7 @@ public class ResourceServerSecurityConfiguration implements ResourceServerConfig
                 "/**/*.js", "/**/*.html", "/**/*.css", "/**/*.ico",
                 "/webjars/**")
                 .permitAll()
-            .antMatchers(HttpMethod.POST, "/api/users")
+            .antMatchers(HttpMethod.POST, "/users")
                 .permitAll()
             .antMatchers(HttpMethod.OPTIONS)
                 .permitAll()

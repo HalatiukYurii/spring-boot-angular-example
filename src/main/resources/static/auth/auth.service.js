@@ -11,9 +11,6 @@ function authService($http, $location, SERVER_URL) {
     service.clearToken = clearToken;
 
     function getToken() {
-        if (!token) {
-            redirectToLoginPage();
-        }
         return token;
     }
 

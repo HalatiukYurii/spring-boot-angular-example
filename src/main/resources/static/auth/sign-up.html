@@ -1,0 +1,23 @@
+<form ng-submit="vm.signUp()">
+  <div class="form-group">
+    <label for="username">Username</label>
+    <input id="username" class="form-control" ng-model="vm.user.username"/>
+    <p ng-if="vm.errors.username" class="error">{{vm.errors.username}}</p>
+  </div>
+  <div class="form-group">
+    <label for="email">Email</label>
+    <input id="email" class="form-control" ng-model="vm.user.email"/>
+    <p ng-if="vm.errors.email" class="error">{{vm.errors.email}}</p>
+  </div>
+  <div class="form-group">
+    <label for="password">Password</label>
+    <input id="password" type="password" class="form-control" ng-model="vm.user.password"/>
+    <p ng-if="vm.errors.password" class="error">{{vm.errors.password}}</p>
+  </div>
+  <div class="form-group">
+    <label for="passwordConfirm">Confirm Password</label>
+    <input id="passwordConfirm" type="password" class="form-control" ng-model="vm.passwordConfirm"/>
+    <p ng-if="vm.errors.passwordConfirm" class="error">{{vm.errors.passwordConfirm}}</p>
+  </div>
+  <button type="submit" class="btn btn-primary">Sign Up</button>
+</form>

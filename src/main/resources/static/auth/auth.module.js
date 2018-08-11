@@ -1,1 +1,1 @@
-angular.module('auth', ['settings', 'ngRoute']);
+angular.module('auth', ['settings', 'ngRoute', 'ngResource']);
