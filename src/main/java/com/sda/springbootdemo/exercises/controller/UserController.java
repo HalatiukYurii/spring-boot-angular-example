@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
+import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationDetails;
 import org.springframework.security.oauth2.provider.token.TokenStore;
@@ -96,13 +97,12 @@ public class UserController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @PostMapping("/users/logout")
+    @PostMapping("/logout")
     @ResponseStatus(HttpStatus.OK)
     public String logout(OAuth2Authentication auth) {
         OAuth2AuthenticationDetails details = (OAuth2AuthenticationDetails) auth.getDetails();
         String token = details.getTokenValue();
         tokenStore.removeAccessToken(new DefaultOAuth2AccessToken(token));
-
         return "User logged out successfully";
     }
 
